@@ -1,0 +1,25 @@
+/* Consulta para el Dashboard */
+SELECT 
+    PRODUCTO, 
+    SUM(UND_PRODUCTO) as TotalUnidades, 
+    SUM(Total_del_documento) as TotalVenta, 
+    CANAL_DE_VENTA, 
+    [Ciudad (MM)]
+FROM VentasSAP
+WHERE FECHA BETWEEN @Inicio AND @Fin
+GROUP BY PRODUCTO, CANAL_DE_VENTA, [Ciudad (MM)]
+ORDER BY TotalVenta DESC
+
+
+/* Consulta Stock por Bodega SAP B1 */
+SELECT 
+    T0."ItemCode" AS "Código", 
+    T1."ItemName" AS "Descripción",
+    SUM(CASE WHEN T0."WhsCode" = '01' THEN T0."OnHand" ELSE 0 END) AS "Bodega_Central",
+    SUM(CASE WHEN T0."WhsCode" = '02' THEN T0."OnHand" ELSE 0 END) AS "Bodega_Ventas",
+    T1."OnHand" AS "Total_General"
+FROM OITW T0 -- Tabla de Inventario por Almacén
+INNER JOIN OITM T1 ON T0."ItemCode" = T1."ItemCode" -- Tabla de Artículos
+GROUP BY T0."ItemCode", T1."ItemName", T1."OnHand"
+HAVING T1."OnHand" > 0
+ORDER BY T1."ItemName" ASC

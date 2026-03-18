@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP BI - Dashboard Corporativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="p-6">
+
+    <main>
+        <div id="pantalla-inicio" class="max-w-4xl mx-auto py-20 text-center">
+            <h1 class="text-3xl font-black text-white mb-10 uppercase italic tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">SAP Intelligence Dashboard</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div onclick="navegar('ventas')" class="card-sap p-10 cursor-pointer hover:border-indigo-500 transition group border-2 border-transparent">
+                    <span class="text-6xl group-hover:scale-110 transition-transform inline-block">📊</span>
+                    <h2 class="mt-4 font-bold text-white uppercase italic">Módulo de Ventas</h2>
+                </div>
+                <div onclick="navegar('inventario')" class="card-sap p-10 cursor-pointer hover:border-cyan-500 transition group border-2 border-transparent">
+                    <span class="text-6xl group-hover:scale-110 transition-transform inline-block">📦</span>
+                    <h2 class="mt-4 font-bold text-white uppercase italic">Gestión Inventario</h2>
+                </div>
+            </div>
+        </div>
+
+        <div id="contenedor-app" class="hidden max-w-7xl mx-auto">
+            <div class="mb-8 border-b border-slate-800 pb-4">
+                <button onclick="irMenu()" class="text-[10px] text-slate-500 hover:text-white font-black mb-2 uppercase tracking-tighter">← VOLVER AL INICIO</button>
+                <div class="flex items-center gap-2">
+                    <h2 id="txt-modulo" class="text-xl font-black text-white uppercase italic tracking-tighter"></h2>
+                    <span class="text-slate-600">/</span>
+                    <h3 id="txt-submodulo" class="text-sm font-bold text-slate-400 uppercase tracking-widest">Panel Principal</h3>
+                </div>
+            </div>
+
+            <section id="mod-inventario" class="hidden">
+                <div id="menu-submodulos-inv" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div onclick="abrirSubModulo('stock-almacen', 'Stock por Almacén')" class="card-sap p-6 cursor-pointer border-l-4 border-cyan-400 hover:bg-slate-800/40 transition">
+                        <h3 class="font-bold text-white text-sm uppercase">Stock por Almacén</h3>
+                        <p class="text-[9px] text-cyan-400 font-bold mt-1 uppercase italic">Operativo</p>
+                    </div>
+                    <div onclick="abrirSubModulo('stock-consolidado', 'Stock por Empresa y Almacén')" class="card-sap p-6 cursor-pointer border-l-4 border-indigo-500 hover:bg-slate-800/40 transition">
+                        <h3 class="font-bold text-white text-sm uppercase">Stock por Empresa y Almacén</h3>
+                        <p class="text-[9px] text-indigo-500 font-bold mt-1 uppercase italic">Vista Consolidada</p>
+                    </div>
+                    <div class="card-sap p-6 border border-dashed border-slate-700 opacity-50">
+                        <h3 class="font-bold text-slate-500 text-sm uppercase">Inventario Consolidado por Producto</h3>
+                        <p class="text-[9px] mt-1 uppercase italic">En Const.</p>
+                    </div>
+                </div>
+
+                <div id="vista-tabla" class="hidden mt-6">
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                        <button onclick="regresarMenuSub()" class="text-[10px] bg-slate-800 px-4 py-2 rounded text-slate-400 font-bold hover:text-white uppercase">← Regresar</button>
+                        <div class="flex gap-2">
+                            <select id="filtro-almacen" onchange="filtrarTabla()" class="bg-slate-900 border border-slate-700 px-3 py-2 rounded-lg text-xs text-white outline-none">
+                                <option value="">Todos los Almacenes</option>
+                            </select>
+                            <input type="text" id="buscador-texto" onkeyup="filtrarTabla()" placeholder="Buscar producto..." class="bg-slate-900 border border-slate-700 px-3 py-2 rounded-lg text-xs w-64 text-white outline-none">
+                            <button onclick="exportarExcel()" class="bg-emerald-600 px-4 py-2 rounded-lg text-[10px] font-bold text-white uppercase italic">Excel</button>
+                        </div>
+                    </div>
+                    <div class="tabla-contenedor card-sap p-4 overflow-x-auto">
+                        <table class="text-left">
+                            <thead id="tabla-head" class="text-slate-500 text-[9px] uppercase border-b border-slate-800 font-bold"></thead>
+                            <tbody id="tabla-body" class="divide-y divide-slate-800 text-[11px]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mod-ventas" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card-sap p-6 border border-dashed border-slate-700 opacity-80">
+                        <div class="flex justify-between items-start mb-4"><span class="text-2xl">📈</span><span class="tag-dev-blue uppercase italic">En Desarrollo</span></div>
+                        <h3 class="font-bold text-white text-sm uppercase">Ventas por Empresa</h3>
+                    </div>
+                    <div class="card-sap p-6 border border-dashed border-slate-700 opacity-80">
+                        <div class="flex justify-between items-start mb-4"><span class="text-2xl">🤝</span><span class="tag-dev-blue uppercase italic">En Desarrollo</span></div>
+                        <h3 class="font-bold text-white text-sm uppercase">Ventas Consolidadas</h3>
+                    </div>
+                    <div class="card-sap p-6 border border-dashed border-slate-700 opacity-80">
+                        <div class="flex justify-between items-start mb-4"><span class="text-2xl">🔄</span><span class="tag-dev-red uppercase italic">En Desarrollo</span></div>
+                        <h3 class="font-bold text-white text-sm uppercase">Devoluciones Consolidado</h3>
+                    </div>
+                    <div class="card-sap p-6 border border-dashed border-slate-700 opacity-80">
+                        <div class="flex justify-between items-start mb-4"><span class="text-2xl">⚠️</span><span class="tag-dev-red uppercase italic">En Desarrollo</span></div>
+                        <h3 class="font-bold text-white text-sm uppercase">Causal por Empresa</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="mt-10 border-t border-slate-800 pt-6 pb-4 text-center">
+        <p class="text-[10px] tracking-[0.2em] uppercase text-slate-500 font-bold">
+            Hecho por <span class="text-cyan-400 italic">Nazly Uzcategui</span> — Área de Sistemas
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
