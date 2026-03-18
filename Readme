@@ -1,84 +1,28 @@
-## 📑 SAP Intelligence Dashboard - Frxxx
-Este es un sistema de Dashboard BI (Business Intelligence) diseñado para conectar directamente con SAP HANA mediante un puente en Node.js. Permite la visualización en tiempo real de inventarios y estados de ventas para la gestión de fxxxx.
+# SAP Sales Intelligence Dashboard 📊
 
-## 🚀 Características Principales
-Conexión Directa a HANA: Consultas optimizadas a 3 base de datos realizando un union all.
+Este proyecto es un **Dashboard interactivo de Inteligencia de Negocios** diseñado para visualizar datos críticos de ventas y stock directamente desde una instancia de **SAP Business One (SQL Server/HANA)**.
 
-Módulo de Inventario:
+## 🛠️ Arquitectura Técnica
+El sistema utiliza una arquitectura cliente-servidor para garantizar la seguridad de las consultas y la fluidez de la interfaz:
 
-Informe detallado de Stock por Almacén.
+- **Frontend:** Interfaz desarrollada con HTML5, CSS3 y JavaScript moderno (ES6). Utiliza animaciones suaves y un diseño responsivo para facilitar la lectura de KPIs.
+- **Backend:** Servidor robusto en **Node.js** con Express.
+- **Conector de Datos:** Integración mediante la librería `mssql`, permitiendo la ejecución de procedimientos almacenados y queries complejas de SAP de forma segura.
 
-Filtros cruzados por bodega y búsqueda de artículos.
+## 🚀 Funcionalidades Clave
+* **Visualización de Ventas:** Resumen de facturación y transacciones en tiempo real.
+* **Control de Inventario:** Monitorización de stock por almacén.
+* **Integración ERP:** Puente directo (Middleware) entre la base de datos de producción y la capa de presentación web.
 
-Valorización automática del inventario basado en el Costo Unitario Real (AvgPrice).
+## ⚙️ Configuración y Seguridad
+Por razones de seguridad, las credenciales de conexión no están incluidas en este repositorio. 
 
-Módulo de Ventas: Estructura preparada para informes de ventas y devoluciones (En desarrollo).
+1. **Instalación:** Ejecutar `npm install` para descargar las dependencias.
+2. **Variables de Entorno:** Se requiere configurar un archivo `.env` o un objeto de configuración en `server.js` con los siguientes parámetros:
+   - `server`: IP o Nombre del Servidor.
+   - `database`: Nombre de la sociedad SAP.
+   - `user` / `password`: Credenciales con permisos de lectura.
+3. **Ejecución:** Iniciar con `node server.js`.
 
-Exportación de Datos: Descarga de reportes filtrados en formato Excel (.xlsx) y PDF (.pdf).
-
-Interfaz Moderna: Diseño oscuro (Dark Mode) responsivo usando Tailwind CSS.
-
-
-## 🛠️ Requisitos Previos
-Antes de iniciar, asegúrate de tener instalado:
-
-1. Node.js (Versión 14 o superior).
-
-2. Visual Studio Code (Recomendado).
-
-3. Acceso a la red/VPN donde se encuentra el servidor SAP HANA (xxx.xxx.xxx.xx).
-
-
-## 📦 Instalación y Configuración
-1. Descargar el proyecto: Coloca los archivos index.html, script.js, server.js y style.css en una carpeta.
-
-2. Instalar Dependencias: Abre una terminal en la carpeta del proyecto y ejecuta:
-
-npm install express hdb cors
-
-3. Configurar permisos (Solo una vez en Windows): Si tienes problemas para ejecutar scripts, abre PowerShell como Administrador y ejecuta:
-
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-
-## 🚦 Cómo Ejecutar el Proyecto
-Cada vez que desees usar el Dashboard, sigue estos pasos:
-
-1. Iniciar el Servidor (Puente SAP): En la terminal de VS Code, escribe:
-
-node server.js
-
-Deberías ver el mensaje: 🚀 DASHBOARD CONECTADO DIRECTO A HANA - PUERTO 3000.
-
-2. Abrir la Interfaz: Busca el archivo index.html en tu carpeta y dale doble clic (se abrirá en tu navegador).
-
-## 📂 Estructura de Archivos.
-
-├── server.js           # Servidor Node.js que hace de puente seguro con la base de datos HANA.
-├── index.html          # Interfaz de usuario (Estructura, menús y botones).
-├── style.css           # Estilos personalizados para el diseño oscuro y tablas.
-├── script.js           # Lógica del cliente, filtros, cálculos y llamadas a la API.
-└── README.md           # Documentación.
-
-## 📊 Consultas SQL Utilizadas
-El sistema utiliza la tabla OITW (Inventario por almacén) y OITM (Maestro de artículos) para calcular:
-
-En Stock: Cantidad física actual.
-
-Costo Unitario: Precio promedio ponderado directo de HANA.
-
-Valor Total: Multiplicación exacta de existencias por costo.
-
-## 📝 Notas de Desarrollo
-Módulos en Construcción: Los botones de "Sumario Consolidado" y todos los de "Ventas" están maquetados visualmente pero a la espera de sus respectivas consultas SQL.
-
-Seguridad: Las credenciales de HANA están configuradas en server.js. Asegúrate de no compartir este archivo públicamente.
-
-## ⚠️ NOTAS DE MANTENIMIENTO
-Cambio de IP: Si el servidor de SAP cambia de dirección, debes actualizar la constante host en el archivo server.js.
-
-Nuevas Bodegas: Para incluir más almacenes, edita la cláusula WHERE T0."WhsCode" IN (...) en el archivo script.js.
-
-Desarrollado para: xxxxx
-Desarrollado por: Nazly Uzcategui
-
-Tecnologías: Node.js, SAP HANA, JavaScript, Tailwind CSS.
+---
+**Desarrollado por Nazly U. | Analista de Sistemas**
