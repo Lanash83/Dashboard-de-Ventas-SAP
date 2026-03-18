@@ -2,7 +2,7 @@
 Este es un sistema de Dashboard BI (Business Intelligence) diseñado para conectar directamente con SAP HANA mediante un puente en Node.js. Permite la visualización en tiempo real de inventarios y estados de ventas para la gestión de fxxxx.
 
 ## 🚀 Características Principales
-Conexión Directa a HANA: Consultas optimizadas a la base de datos PRUEBA_FRANQUICIASFULL.
+Conexión Directa a HANA: Consultas optimizadas a 3 base de datos realizando un union all.
 
 Módulo de Inventario:
 
@@ -26,7 +26,7 @@ Antes de iniciar, asegúrate de tener instalado:
 
 2. Visual Studio Code (Recomendado).
 
-3. Acceso a la red/VPN donde se encuentra el servidor SAP HANA (170.239.154.95).
+3. Acceso a la red/VPN donde se encuentra el servidor SAP HANA (xxx.xxx.xxx.xx).
 
 
 ## 📦 Instalación y Configuración
